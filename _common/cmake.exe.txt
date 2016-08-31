@@ -1,0 +1,16 @@
+#external dep.: ${NAME} 
+
+SET(BIN_SOURCE $(TargetPath))
+#SET(BIN_SOURCE ${${NAME}_BINARY_DIR}) #gives dir without debug/release
+SET(BIN ${CMAKE_CURRENT_SOURCE_DIR}/bin/)
+
+IF (WIN32)
+  STRING(REGEX REPLACE "/" "\\\\" BIN "${BIN}")
+ENDIF (WIN32)
+
+ADD_CUSTOM_COMMAND(TARGET ${NAME} 
+	POST_BUILD
+	COMMAND xcopy
+	ARGS ${BIN_SOURCE} "${BIN}" /y/f/d)
+
+ADD_CUSTOM_TARGET(${NAME}.DELETE.BIN rmdir "${BIN}" /S/Q)

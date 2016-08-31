@@ -1,0 +1,21 @@
+#creates a xcopy from copy_src to copy_dst as custom target with name target_name 
+MACRO(macro_copy target_name copy_src copy_dst)
+	IF(WIN32)
+		STRING(REGEX REPLACE "/" "\\\\" copy_DST "${copy_dst}")
+		STRING(REGEX REPLACE "/" "\\\\" copy_SRC "${copy_src}")
+	ENDIF(WIN32)
+		ADD_CUSTOM_TARGET(${target_name} ALL xcopy ${copy_SRC} ${copy_DST} /y/f/d)
+ENDMACRO(macro_copy)
+
+MACRO(macro_copy_list target_name copy_src copy_dst copylist)
+	FOREACH(copy_fileName ${copylist})
+		macro_copy(${target_name}.${copy_fileName} ${copy_src}${copy_fileName} ${copy_dst})
+	ENDFOREACH(copy_fileName)
+ENDMACRO(macro_copy_list)
+
+MACRO(macro_rmdir target_name rmdir_dst)
+	IF(WIN32)
+		STRING(REGEX REPLACE "/" "\\\\" rmdir_DST "${rmdir_dst}")
+	ENDIF(WIN32)
+	ADD_CUSTOM_TARGET(${target_name} rmdir ${rmdir_DST} /S/Q)
+ENDMACRO(macro_rmdir)

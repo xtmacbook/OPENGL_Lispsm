@@ -1,0 +1,12 @@
+#external dep.: ${NAME} 
+
+SET(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/)
+SET(BIN ${CMAKE_CURRENT_SOURCE_DIR}/bin/)
+
+IF (WIN32)
+  STRING(REGEX REPLACE "/" "\\\\" BIN "${BIN}")
+  STRING(REGEX REPLACE "/" "\\\\" SOURCE "${SOURCE}")
+ENDIF (WIN32)
+
+ADD_CUSTOM_TARGET(${NAME}.VERT ALL xcopy "${SOURCE}*.vert" "${BIN}" /y/f/d)
+ADD_CUSTOM_TARGET(${NAME}.FRAG ALL xcopy "${SOURCE}*.frag" "${BIN}" /y/f/d)
